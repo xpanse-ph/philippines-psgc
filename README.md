@@ -10,16 +10,16 @@ Disclaimer: This is a growing repository of our understanding of the Philippine 
 
 1. Regions
 2. Provinces
-3. Districts*
+3. Districts<sup>1</sup>
 4. Cities
 5. Municipalities
-6. Sub-Municipalities**
+6. Sub-Municipalities<sup>2</sup>
 7. Barangays
-8. Purok***
+8. Purok<sup>3</sup>
 
-* Metro Manila is the only province that uses districts
-** The city of Manila (Metro Manila) is the only city that uses sub-municipalities
-*** Purok is less common in Metro Manila but is sometimes used as the Address 1 or Address 2 entries
+<sup>1</sup>Metro Manila is the only province that uses districts
+<sup>2</sup>The city of Manila (Metro Manila) is the only city that uses sub-municipalities
+<sup>3</sup>Purok is less common in Metro Manila but is sometimes used as the Address 1 or Address 2 entries
 
 ### PSGC code breakdown:
 
