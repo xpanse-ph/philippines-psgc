@@ -17,9 +17,9 @@ Disclaimer: This is a growing repository of our understanding of the Philippine 
 7. Barangays
 8. Purok<sup>3</sup>
 
-<sup>1</sup>Metro Manila is the only province that uses districts
-<sup>2</sup>The city of Manila (Metro Manila) is the only city that uses sub-municipalities
-<sup>3</sup>Purok is less common in Metro Manila but is sometimes used as the Address 1 or Address 2 entries
+<sup>1</sup>Metro Manila is the only province that uses districts  
+<sup>2</sup>The city of Manila (Metro Manila) is the only city that uses sub-municipalities  
+<sup>3</sup>Purok is less common in Metro Manila but is sometimes used as the Address 1 or Address 2 entries  
 
 ### PSGC code breakdown:
 
@@ -50,5 +50,8 @@ I don't know who decided to zone Manila but it's such a PITA.
 
 # TODO
 
-- Barangays
-- Export to different formats: CSV, JSON, YML
+- [ ] Fix Incorrect Provinces: MM Districts, City of Isabela, and Cotabato City
+- [ ] Add Barangays
+- [ ] Export to different formats: CSV, JSON, YML
+- [ ] Edit readme with instructions on how to run `app.rb`
+- [ ] Finish notes

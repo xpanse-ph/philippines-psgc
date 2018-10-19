@@ -1,9 +1,6 @@
 require 'roo'
 require 'pp'
 
-# notes
-# the SubMuns really f things up :) :) :)
-
 regions = [
   {
     "code": "14",
@@ -26,11 +23,10 @@ regions = [
   }
 ]
 
-xlsx = Roo::Excelx.new("./PSGC Publication Jun2018.xlsx")
+xlsx = Roo::Excelx.new("./psgc-publications/PSGC Publication Jun2018.xlsx")
 as = address_sheet = xlsx.sheet('PSGC')
 regions = []
 
-# (2..2022).each do |i|
 (2..as.count).each do |i|
   current_cell  = as.cell(i, 1).to_s
 
@@ -93,8 +89,6 @@ regions = []
   end
 end
 
-# pp regions
-
 province_count  = 0
 city_count      = 0
 
@@ -107,9 +101,9 @@ regions.each do |region|
   end
 end
 
-pp "Regions: #{regions.count}"
-pp "Provinces: #{province_count}"
-pp "Cities/Municipalities: #{city_count}"
+puts "Regions: #{regions.count}"
+puts "Provinces: #{province_count}"
+puts "Cities/Municipalities: #{city_count}"
 
 
 
