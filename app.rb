@@ -1,15 +1,6 @@
 require 'roo'
 require 'pp'
 
-# PSGC code breakdown:
-# –––––––––
-# RRPPMMBBB
-# –––––––––
-# 2 R digits for Region
-# 2 P digits for Province
-# 2 M digits for City/Municipality
-# 3 B digits for Barangays
-
 # notes
 # the SubMuns really f things up :) :) :)
 
@@ -39,9 +30,10 @@ xlsx = Roo::Excelx.new("./PSGC Publication Jun2018.xlsx")
 as = address_sheet = xlsx.sheet('PSGC')
 regions = []
 
-# (2..as.count).each do |i|
-(2..2022).each do |i|
-  current_cell  = as.cell(i, 1)
+# (2..2022).each do |i|
+(2..as.count).each do |i|
+  current_cell  = as.cell(i, 1).to_s
+
   region        = current_cell[0..1]
   province      = current_cell[2..3]
   city          = current_cell[4..5]
@@ -101,8 +93,23 @@ regions = []
   end
 end
 
-pp regions
+# pp regions
 
+province_count  = 0
+city_count      = 0
+
+regions.each do |region|
+  province_count += region[:provinces].count
+
+  region[:provinces].each do |province|
+    puts province[:name]
+    city_count += province[:cities].count
+  end
+end
+
+pp "Regions: #{regions.count}"
+pp "Provinces: #{province_count}"
+pp "Cities/Municipalities: #{city_count}"
 
 
 
