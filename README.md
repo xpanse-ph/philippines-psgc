@@ -1,6 +1,6 @@
 # philippines-psgc
 
-A list of regions, provinces, city/municipalities according to the latest PSGC publications published by xpanse.
+A list of regions, provinces, cities/municipalities according to the latest PSGC publications published by xpanse.
 
 Disclaimer: This is a growing repository of our understanding of the Philippine Address system and we might have mistakes with the way we classify, collect, and present data so please use the data accordingly. We also don't claim rights to owning PSGC's data. We're merely transforming the Excel publications they put out every month and transform them.
 
