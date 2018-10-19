@@ -1,27 +1,28 @@
+require 'json'
 require 'roo'
 require 'pp'
 
-regions = [
-  {
-    "code": "14",
-    "name": "NCR",
-    "type": "region",
-    "provinces": [
-      {
-        "code": "1401",
-        "name": "ABRA",
-        "type": "province",
-        "cities": [
-          {
-            "code": "140101",
-            "name": "BANGUED (Capital",
-            "type": "city"
-          }
-        ]
-      }
-    ]
-  }
-]
+# regions = [
+#   {
+#     "code": "14",
+#     "name": "NCR",
+#     "type": "region",
+#     "provinces": [
+#       {
+#         "code": "1401",
+#         "name": "ABRA",
+#         "type": "province",
+#         "cities": [
+#           {
+#             "code": "140101",
+#             "name": "BANGUED (Capital",
+#             "type": "city"
+#           }
+#         ]
+#       }
+#     ]
+#   }
+# ]
 
 xlsx = Roo::Excelx.new("./psgc-publications/PSGC Publication Jun2018.xlsx")
 as = address_sheet = xlsx.sheet('PSGC')
@@ -38,7 +39,7 @@ regions = []
   # sets up regions
   if region != 13
     unless regions.detect { |r| r[:code] == region }
-      regions << { code: region, type: "region" }
+      regions << { code: region, psgc_code: "#{region}0000000", type: "region" }
     end
   end
 
@@ -49,17 +50,18 @@ regions = []
   end
 
   # provinces (regions hash should exist here)
+  # unless ["39", "74", "75", "76", "97", "98"].include?(province)
   unless province == "00"
     current_region_hash = regions.detect { |r| r[:code] == region }
     if current_region_hash[:provinces]
       unless current_region_hash[:provinces].detect { |c| c[:code] == province}
         unless province == "00"
-          current_region_hash[:provinces] << { code: province, type: "province" }
+          current_region_hash[:provinces] << { code: province, psgc_code: "#{region}#{province}00000", type: "province" }
         end
       end
     else
       current_region_hash[:provinces] = []
-      current_region_hash[:provinces] << { code: province, type: "province" }
+      current_region_hash[:provinces] << { code: province, psgc_code: "#{region}#{province}00000", type: "province" }
     end
 
     # sets up province names
@@ -73,12 +75,12 @@ regions = []
       if current_province_hash[:cities]
         unless current_province_hash[:cities].detect { |b| b[:code] == city }
           unless city == "00"
-            current_province_hash[:cities] << { code: city, type: "city" }
+            current_province_hash[:cities] << { code: city, psgc_code: "#{region}#{province}#{city}000", type: "city" }
           end
         end
       else
         current_province_hash[:cities] = []
-        current_province_hash[:cities] << { code: city, type: "city" }
+        current_province_hash[:cities] << { code: city, psgc_code: "#{region}#{province}#{city}000", type: "city" }
       end
 
       if barangay == "000"
@@ -89,22 +91,41 @@ regions = []
   end
 end
 
-province_count  = 0
-city_count      = 0
+list_of_provinces = []
+list_of_provinces << { "METRO MANILA": [] }
 
 regions.each do |region|
-  province_count += region[:provinces].count
-
   region[:provinces].each do |province|
-    puts province[:name]
-    city_count += province[:cities].count
+    # Cities that shouldn't be provinces
+    if ["97", "98"].include?(province[:code])
+
+    end
+
+    # MM Districts
+    if ["39", "74", "75", "76"].include?(province[:code])
+      province[:cities].each do |city|
+        new_city_name = city[:name].gsub("CITY OF ", "")
+        list_of_provinces[0][:"METRO MANILA"] << new_city_name
+      end
+    end
+
+    unless ["39", "74", "75", "76", "97", "98"].include?(province[:code])
+      city_list = []
+      province[:cities].each do |city|
+        city_list << city[:name]
+      end
+
+      if province[:name] == "MAGUINDANAO"
+        city_list << "COTABATO CITY"
+      elsif province[:name] == "BASILAN"
+        city_list << "ISABELA"
+      end
+
+      list_of_provinces << { "#{province[:name]}": city_list.sort { |a, b| a <=> b } }
+    end
   end
 end
 
-puts "Regions: #{regions.count}"
-puts "Provinces: #{province_count}"
-puts "Cities/Municipalities: #{city_count}"
-
-
-
+File.open("prov-citymuns.json", "wb") { |file| file.puts JSON.pretty_generate(list_of_provinces) }
+File.open("prov-citymuns.min.json", "wb") { |file| file.puts list_of_provinces.to_json }
 
